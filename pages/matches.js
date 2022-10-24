@@ -1,5 +1,6 @@
 import { Container, Flex, Text } from '@chakra-ui/react';
-import TeamMatchThumbnail from '../components/TeamMatchThumbnail';
+import MatchThumbnail from '../components/MatchThumbnail';
+import { getWC22AllMatches } from '../utils/WC22Data';
 
 function Matches({ data }) {
   return (
@@ -13,17 +14,7 @@ function Matches({ data }) {
           mb={20}
         >
           <Text>{match.local_date}</Text>
-          <Flex align="center" justify="space-between">
-            <TeamMatchThumbnail
-              name={match.home_team_en}
-              flagUrl={match.home_flag}
-            />
-            <span>VS</span>
-            <TeamMatchThumbnail
-              name={match.away_team_en}
-              flagUrl={match.away_flag}
-            />
-          </Flex>
+          <MatchThumbnail match={match} />
         </Flex>
       ))}
     </Container>
@@ -31,16 +22,11 @@ function Matches({ data }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch('http://api.cup2022.ir/api/v1/match', {
-    headers: {
-      Authorization: `Bearer ${process.env.WC22_API_TOKEN}`
-    }
-  });
-  const matches = await res.json();
+  const matches = await getWC22AllMatches();
 
   return {
     props: {
-      data: matches.data
+      data: matches
     }
   };
 }
