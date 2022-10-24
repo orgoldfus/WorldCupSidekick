@@ -2,7 +2,7 @@ import { groupBy } from 'lodash';
 import { parse } from 'date-fns';
 import Head from 'next/head';
 import Image from 'next/image';
-import { Container, Flex, Text, Heading } from '@chakra-ui/react';
+import { Container, Flex, Text, Heading, Button } from '@chakra-ui/react';
 import NextMatch from '../components/NextMatch';
 import { getWC22AllMatches, getWC22AllTeams } from '../utils/WC22Data';
 
@@ -16,26 +16,37 @@ function Home({ nextMatch, groups }) {
       </Head>
 
       <main>
-        <NextMatch match={nextMatch} />
-        <Flex wrap="wrap" gap="50px 30px">
-          {groups.map(([group, teams]) => (
-            <Flex direction="column" key={group}>
-              <Heading size="sm">Group {group}</Heading>
-              <Flex direction="column">
-                {teams.map((team) => (
-                  <Flex key={team.id} mb={4}>
-                    <Image
-                      src={team.flag}
-                      alt={`${team.name} flag`}
-                      width={42}
-                      height={28}
-                    />
-                    <Text ml={4}>{team.name_en}</Text>
-                  </Flex>
-                ))}
+        <Flex direction="column" align="center" mt={16}>
+          <NextMatch match={nextMatch} />
+          <Button
+            variant="ghost"
+            mt={4}
+            colorScheme="green"
+            as="a"
+            href="/matches"
+          >
+            Browse all matches
+          </Button>
+          <Flex mt={16} wrap="wrap" gap="50px 30px" justify="center">
+            {groups.map(([group, teams]) => (
+              <Flex direction="column" key={group}>
+                <Heading size="sm">Group {group}</Heading>
+                <Flex direction="column">
+                  {teams.map((team) => (
+                    <Flex key={team.id} mb={4}>
+                      <Image
+                        src={team.flag}
+                        alt={`${team.name} flag`}
+                        width={42}
+                        height={28}
+                      />
+                      <Text ml={4}>{team.name_en}</Text>
+                    </Flex>
+                  ))}
+                </Flex>
               </Flex>
-            </Flex>
-          ))}
+            ))}
+          </Flex>
         </Flex>
       </main>
 
